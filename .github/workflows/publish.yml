@@ -1,0 +1,38 @@
+name: Build Docker Image
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - osa3/puhelinluettelo_backend/app/**
+      - osa3/puhelinluettelo_backend/.dockerignore
+      - osa3/puhelinluettelo_backend/Dockerfile
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+        REGISTRY: ${{ vars.AWS_ACCOUNT_NUMBER }}.dkr.ecr.${{ vars.AWS_ECR_REGION }}.amazonaws.com
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_ECR_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-duration-seconds: 1200
+      - name: Login to ECR
+        uses: docker/login-action@v3
+        with:
+            registry: ${{ env.REGISTRY }}
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          context: osa3/puhelinluettelo_backend
+          tags: ${{ env.REGISTRY }}/fso3:LATEST
+          platforms: linux/amd64

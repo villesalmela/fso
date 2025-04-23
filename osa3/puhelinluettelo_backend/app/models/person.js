@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 mongoose.set('strictQuery', false)
 mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('MongoDB connection error:', err));
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err))
 
 const personSchema = new mongoose.Schema({
   name: {
@@ -13,16 +13,16 @@ const personSchema = new mongoose.Schema({
   number: {
     type: String,
     validate: {
-        validator: function(v) {
-          return /\d{2}-\d{5,}|\d{3}-\d{4,}/.test(v);
-        },
-        message: props => `${props.value} is not a valid number`
+      validator: function(v) {
+        return /\d{2}-\d{5,}|\d{3}-\d{4,}/.test(v)
       },
-      required: [true, 'number is required']
+      message: props => `${props.value} is not a valid number`
+    },
+    required: [true, 'number is required']
   },
 })
 
-const Person =  mongoose.model.Person || mongoose.model('Person', personSchema, "henkilöt")
+const Person =  mongoose.model.Person || mongoose.model('Person', personSchema, 'henkilöt')
 personSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
@@ -31,4 +31,4 @@ personSchema.set('toJSON', {
   }
 })
 
-export {Person, mongoose}
+export { Person, mongoose }

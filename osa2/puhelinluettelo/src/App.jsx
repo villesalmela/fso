@@ -107,6 +107,7 @@ const App = () => {
             setNewName('')
             setNewNumber('')
             setNotification(`Updated ${newName}`)
+            setTimeout(() => {setNotification(null)}, 5000)
           })
           .catch( () => {
             setError(`${person.name} has already been removed`)
@@ -115,14 +116,19 @@ const App = () => {
       } else return // user cancelled
     } else { // actually new name
       numbersService.create({name: newName, number: newNumber})
-        .then(data => setPersons(persons.concat(data)))
-      setNewName('')
-      setNewNumber('')
-      setNotification(`Added ${newName}`)
+        .then(data => {
+          setPersons(persons.concat(data))
+          setNewName('')
+          setNewNumber('')
+          setNotification(`Added ${newName}`)
+          setTimeout(() => {setNotification(null)}, 5000)
+        })
+        .catch(error => {
+          setError(error.response.data.error)
+          setTimeout(() => {setError(null)}, 5000)
+        })
     }
-    setTimeout(() => {setNotification(null)}, 5000)
   }
-
 
   return (
     <div>

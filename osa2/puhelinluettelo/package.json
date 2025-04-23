@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:full": "vite build && rm -rf ../../osa3/puhelinluettelo_backend/dist && cp -r dist ../../osa3/puhelinluettelo_backend/",
+    "build:full": "vite build && rm -rf ../../osa3/puhelinluettelo_backend/app/dist && cp -r dist ../../osa3/puhelinluettelo_backend/app/",
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "json-server -p 3001 db.json"

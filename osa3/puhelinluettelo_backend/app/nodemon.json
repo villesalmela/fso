@@ -1,0 +1,4 @@
+{
+    "watch": ["models", "dist", "index.js", "logger.js"],
+    "ext": "html,css,js"
+  }

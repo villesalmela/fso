@@ -19,7 +19,7 @@ const AddInputs = ({ nameValue, numberValue, nameFunc, numberFunc }) => {
   )
 }
 
-const Display = ({ persons, filter, setPersons }) => {
+const Display = ({ persons, filter, setPersons, setNotification }) => {
   let pList = [...persons]
     if (filter.length > 0) {
       pList = persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
@@ -33,6 +33,8 @@ const Display = ({ persons, filter, setPersons }) => {
           if (window.confirm(`Delete ${person.name}?`)) {
             numbersService.remove(person.id).then(() => {
               setPersons(persons.filter(x => x.id !== person.id))
+              setNotification(`Deleted ${person.name}`)
+              setTimeout(() => {setNotification(null)}, 5000)
             })
           }
         }}>delete</button>
@@ -146,7 +148,7 @@ const App = () => {
         />
       </form>
       <h2>Numbers</h2>
-      <Display persons={persons} filter={filter} setPersons={setPersons} />
+      <Display persons={persons} filter={filter} setPersons={setPersons} setNotification={setNotification} />
     </div>
   )
 

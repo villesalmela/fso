@@ -42,17 +42,17 @@ app.post('/api/persons', (request, response, next) => {
     const name = request.body.name
     const number = request.body.number
     if (!name) {
-        response.status(400).send("Missing name")
+        response.status(400).json({error: "Missing name"})
         return
     }
     if (!number) {
-        response.status(400).send("Missing number")
+        response.status(400).json({error: "Missing number"})
         return
     }
     Person.exists({name: name})
       .then(result => {
         if (result) {
-          response.status(400).send("Name already exists")
+          response.status(400).json({error: "Name already exists"})
         } else {
           Person.create({name, number})
             .then(result => response.status(201).send(result))
@@ -72,11 +72,11 @@ app.put('/api/persons/:id', (request, response) => {
   const name = request.body.name
   const number = request.body.number
   if (!name) {
-      response.status(400).send("Missing name")
+      response.status(400).json({error: "Missing name"})
       return
   }
   if (!number) {
-      response.status(400).send("Missing number")
+      response.status(400).json({error: "Missing number"})
       return
   }  
   Person.findByIdAndUpdate(request.params.id, {name, number})
@@ -88,15 +88,13 @@ app.put('/api/persons/:id', (request, response) => {
 })
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
+  response.status(404).json({ error: 'unknown endpoint' })
 }
 app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
-
   if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
+    return response.status(400).json({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
   }

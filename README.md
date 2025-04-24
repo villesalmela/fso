@@ -1,1 +1,2 @@
-[Linkki sovellukseen](https://kxtrqpp93c.eu-central-1.awsapprunner.com)
+Linkki sovellukseen:
+[Fullstack.REST](https://fullstack.rest)

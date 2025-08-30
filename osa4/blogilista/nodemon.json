@@ -1,0 +1,4 @@
+{
+    "watch": ["models", "controllers", "utils", "index.js", "temp.js"],
+    "ext": "html,css,js"
+  }
